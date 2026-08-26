@@ -28,25 +28,19 @@ tokens (e.g. `directory=docs/wiki`) are configuration overrides.
 
 ### 1. Resolve configuration
 
-1. Read `.specify/extensions/wiki/wiki-config.yml` if it exists; otherwise use
-   the extension defaults (`wiki/` directory, 12 pages max per ingest, 600
-   words per page, citations required, 8-page query slice, 90-day staleness,
-   `index-and-links` auto-fix).
-2. Apply any `SPECKIT_WIKI_*` environment variable overrides, then any
-   `key=value` overrides from `$ARGUMENTS` (highest precedence).
-3. `WIKI_DIR` = the configured `state.directory`, relative to the repo root.
+1. Start with the extension defaults (`wiki/` directory, 12 pages max per ingest, 600 words per page, citations required, 8-page query slice, 4000 context tokens, 90-day staleness, `index-and-links` auto-fix, and the default page types).
+2. Overlay `.specify/extensions/wiki/wiki-config.yml` if it exists, then `SPECKIT_WIKI_*` environment variable overrides, then `key=value` overrides from `$ARGUMENTS`. Resolve each setting independently; a missing higher-precedence value falls through to the next source.
+3. Validate the effective settings before reading or writing wiki state. The directory must be a non-empty repository-relative path; page, word, query, and context limits must be positive whole numbers; the staleness threshold must be a non-negative whole number; citation policy must be boolean; `lint.auto_fix` must be `none` or `index-and-links`; page types must be a non-empty list of unique names. Reject unknown override keys and invalid values with the setting name and accepted form.
+4. Resolve the repository root and configured directory to normalized absolute paths, resolving any existing symbolic-link components. `WIKI_DIR` must be the repository root itself or a descendant of it. If the candidate escapes that boundary, stop before any wiki read or write, identify the rejected directory, and report that nothing changed.
+5. Use the validated canonical candidate as `WIKI_DIR` for every later check and write.
 
 ### 2. Idempotency check
 
-If `WIKI_DIR/SCHEMA.md` already exists, **do not overwrite anything**. Report
-that the wiki is already initialized, then behave exactly like
-`/speckit.wiki.status` and stop. If the user supplied a new scope sentence in
-`$ARGUMENTS`, append it to the `## Scope` section of `SCHEMA.md` as an
-additional numbered item instead.
+If `WIKI_DIR/SCHEMA.md` already exists, **do not overwrite, regenerate, or repair any wiki artifact**. If the user supplied a new scope sentence in `$ARGUMENTS`, append that text verbatim to the `## Scope` section as exactly one additional numbered item; otherwise write nothing. Report that the wiki is already initialized, behave exactly like `/speckit.wiki.status`, and stop. Treat the schema as the sole initialization sentinel: missing companion artifacts are surfaced by status or lint and are never silently reconstructed here.
 
 ### 3. Create the wiki skeleton
 
-Create `WIKI_DIR/` and write each file below exactly once.
+Before writing, verify that `WIKI_DIR` can be created or written and that none of the three required artifact paths already exists without the schema sentinel. If partial foundation artifacts would collide, stop and preserve them for explicit user recovery. Render all three artifact contents first, then create `WIKI_DIR/` and write each file below exactly once. If creation fails partway through, remove only the artifacts created by this invocation and report the failure; never alter content that existed before the invocation.
 
 `SCHEMA.md` — the schema layer (user-editable; every command obeys it):
 
@@ -109,8 +103,7 @@ Sources are immutable inputs — the wiki never edits them.
 |----|--------|------|----------------|---------------|---------------|
 ```
 
-Replace every `<...>` placeholder with the resolved configuration value.
-Do not create `pages/` yet — the first `ingest` creates it.
+Replace every `<...>` placeholder with the resolved configuration value. Do not create `pages/` yet — the first `ingest` creates it. Do not synthesize project claims or pre-populate the index or source registry.
 
 ### 4. Report
 
@@ -126,6 +119,8 @@ Output a short confirmation:
 ## Guardrails
 
 - Never delete or truncate an existing wiki; this command only creates.
+- Reject targets outside the project root before checking or creating wiki artifacts.
+- Never overwrite partial foundation artifacts when the schema sentinel is absent; report the collision for user-directed recovery.
 - Do not pre-populate pages from general knowledge — pages exist only when a
   registered source supports them.
 - Keep this command's own context usage minimal: do not scan the repo here;

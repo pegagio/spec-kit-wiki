@@ -152,9 +152,7 @@ makes it *permanent and reusable across features*. `harness.report` writes
 /speckit.wiki.init Everything we learn about the payments domain and our vendor constraints
 ```
 
-Creates `wiki/SCHEMA.md` (the rules — edit freely; commands obey it),
-`wiki/INDEX.md`, and `wiki/sources.md`. Idempotent: re-running appends a new
-scope line instead of overwriting.
+Creates `wiki/SCHEMA.md` (the rules — edit freely; commands obey it), `wiki/INDEX.md`, and `wiki/sources.md`. Initialization never creates knowledge pages or synthesized claims. It is idempotent: re-running without a scope writes nothing, while a supplied scope is appended as one new numbered item instead of overwriting existing wiki content.
 
 ### 2. `/speckit.wiki.ingest` — whenever knowledge is produced
 
@@ -264,14 +262,13 @@ lint:
   auto_fix: index-and-links   # none | index-and-links
 ```
 
-Precedence (lowest → highest): extension defaults → config file →
-`SPECKIT_WIKI_*` environment variables → per-invocation `key=value` arguments.
+Precedence is resolved per setting from lowest to highest: extension defaults → config file → `SPECKIT_WIKI_*` environment variables → per-invocation `key=value` arguments. Numeric limits are validated before use, and `lint.auto_fix` accepts only `none` or `index-and-links`.
+
+The configured state directory must remain inside the repository after path normalization and existing-symlink resolution. Initialization rejects escaping values such as `directory=../outside-wiki` before reading or writing wiki state.
 
 ## Troubleshooting & FAQ
 
-**`init` says the wiki already exists.** By design — it never overwrites. New
-scope sentences are appended; to start over, delete the `wiki/` directory
-yourself.
+**`init` says the wiki already exists.** By design — `SCHEMA.md` is the initialization sentinel and existing wiki content is never regenerated. New scope sentences are appended verbatim. If the wiki is partial or damaged, inspect it with `status` and `lint`; initialization leaves recovery decisions to you rather than replacing user-authored state.
 
 **`query` refuses to answer something the model obviously knows.** Also by
 design: the wiki's value is that its answers are *backed*. Ingest a source

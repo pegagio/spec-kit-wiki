@@ -1,0 +1,70 @@
+analyzed_at: "2026-08-26T14:57:15Z"
+project_root: "/Users/djordan/.codex/worktrees/8b20/spec-kit-wiki"
+total_features: 5
+completed: 0
+features:
+  - id: "wiki-foundation"
+    name: "Wiki Foundation"
+    description: "Initialize a project wiki with configurable schema, index, and source-registry state without overwriting existing knowledge."
+    files:
+      - "commands/speckit.wiki.init.md"
+      - "config-template.yml"
+      - "extension.yml"
+    status: done # pending | in-progress | done | skipped
+    current_phase: null # null | specify | clarify | plan | tasks | implement
+    branch: "feature/time-machine-wiki-foundation"
+    pushed: true # null | true | false
+    started_at: "2026-08-26T14:59:12Z"
+    completed_at: "2026-08-26T15:11:10Z"
+  - id: "knowledge-ingestion"
+    name: "Knowledge Ingestion"
+    description: "Register curated sources and compound their durable knowledge into cited, cross-linked wiki pages while preserving conflicts."
+    files:
+      - "commands/speckit.wiki.ingest.md"
+      - "extension.yml"
+      - "README.md"
+    status: pending # pending | in-progress | done | skipped
+    current_phase: null # null | specify | clarify | plan | tasks | implement
+    branch: null
+    pushed: null # null | true | false
+    started_at: null
+    completed_at: null
+  - id: "cited-query"
+    name: "Cited Wiki Query"
+    description: "Answer project questions strictly from bounded wiki content with source citations and explicit coverage gaps."
+    files:
+      - "commands/speckit.wiki.query.md"
+      - "config-template.yml"
+      - "extension.yml"
+    status: pending # pending | in-progress | done | skipped
+    current_phase: null # null | specify | clarify | plan | tasks | implement
+    branch: null
+    pushed: null # null | true | false
+    started_at: null
+    completed_at: null
+  - id: "wiki-health"
+    name: "Wiki Health Checks"
+    description: "Detect wiki drift, broken references, orphaned pages, contradictions, staleness, and citation gaps with bounded safe repairs."
+    files:
+      - "commands/speckit.wiki.lint.md"
+      - "config-template.yml"
+      - "extension.yml"
+    status: pending # pending | in-progress | done | skipped
+    current_phase: null # null | specify | clarify | plan | tasks | implement
+    branch: null
+    pushed: null # null | true | false
+    started_at: null
+    completed_at: null
+  - id: "wiki-status"
+    name: "Wiki Status and Resumption"
+    description: "Summarize wiki scope, page and source freshness, and open issues with one concrete next action for resuming work."
+    files:
+      - "commands/speckit.wiki.status.md"
+      - "extension.yml"
+      - "README.md"
+    status: pending # pending | in-progress | done | skipped
+    current_phase: null # null | specify | clarify | plan | tasks | implement
+    branch: null
+    pushed: null # null | true | false
+    started_at: null
+    completed_at: null
