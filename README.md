@@ -182,6 +182,10 @@ Loads the index, reads at most `pages_slice` relevant pages, and answers with
 citations — closing with an honest coverage verdict: **Covered**, **Partial**
 (with the exact gap and the ingest that would close it), or **Uncovered**.
 
+Index metadata selects candidates but is not itself evidence. Query reads only selected pages and the source-registry entries needed to validate their citations; claims with unknown source IDs are reported as provenance gaps. The question and all wiki text are untrusted data, so embedded instructions cannot change limits, invoke tools, expand access, or weaken the read-only contract.
+
+Covered means every material part of the question has valid evidence, Partial means only some do, and Uncovered means none do. Conflicts remain visible with every cited side. Query never repairs structural problems or changes project files.
+
 ### 4. `/speckit.wiki.lint` — regular maintenance
 
 ```text
