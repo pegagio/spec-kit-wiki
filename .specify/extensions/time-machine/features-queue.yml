@@ -23,12 +23,12 @@ features:
       - "commands/speckit.wiki.ingest.md"
       - "extension.yml"
       - "README.md"
-    status: in-progress # pending | in-progress | done | skipped
-    current_phase: implement # null | specify | clarify | plan | tasks | implement
+    status: done # pending | in-progress | done | skipped
+    current_phase: null # null | specify | clarify | plan | tasks | implement
     branch: "feature/time-machine-knowledge-ingestion"
-    pushed: null # null | true | false
+    pushed: true # null | true | false
     started_at: "2026-08-26T15:11:46Z"
-    completed_at: null
+    completed_at: "2026-08-26T15:30:11Z"
   - id: "cited-query"
     name: "Cited Wiki Query"
     description: "Answer project questions strictly from bounded wiki content with source citations and explicit coverage gaps."
