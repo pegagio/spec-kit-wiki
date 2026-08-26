@@ -26,7 +26,7 @@ query:
 # semantic issues (contradictions, stale claims) are only ever reported.
 lint:
   stale_after_days: 90       # non-negative whole number; age threshold for stale pages
-  auto_fix: index-and-links  # none | index-and-links (regenerate INDEX.md, repair dead links)
+  auto_fix: index-and-links  # none | index-and-links (regenerate INDEX.md, update unambiguous renamed targets)
 
 # Page taxonomy enforced by SCHEMA.md. Edit SCHEMA.md in your wiki to change
 # definitions; keep this list in sync so commands classify pages consistently.

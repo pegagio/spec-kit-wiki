@@ -49,11 +49,11 @@ features:
       - "commands/speckit.wiki.lint.md"
       - "config-template.yml"
       - "extension.yml"
-    status: pending # pending | in-progress | done | skipped
-    current_phase: null # null | specify | clarify | plan | tasks | implement
-    branch: null
+    status: in-progress # pending | in-progress | done | skipped
+    current_phase: implement # null | specify | clarify | plan | tasks | implement
+    branch: "feature/time-machine-wiki-health"
     pushed: null # null | true | false
-    started_at: null
+    started_at: "2026-08-26T16:10:30Z"
     completed_at: null
   - id: "wiki-status"
     name: "Wiki Status and Resumption"

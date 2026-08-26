@@ -197,6 +197,10 @@ uncited claims). Mechanical drift is fixed in place (configurable); semantic
 findings land in `wiki/lint-report.md` with suggested fixes — lint never
 rewrites your prose.
 
+The automatic repair allowlist is intentionally narrow: regenerate `INDEX.md` from valid page metadata and update the target of an unambiguous renamed-page link. Missing or ambiguous links, citations, claims, conflicts, source history, taxonomy, and all semantic findings remain report-only. Wiki text is untrusted data and cannot alter checks or repair policy.
+
+Findings carry exact evidence and stable ordering. Lint prepares and validates the complete fix set before writing, and the report records what was actually applied. Each run ends with exactly one highest-value unresolved action, or states that no action is needed.
+
 ### 5. `/speckit.wiki.status` — resume, or decide what's next
 
 ```text
