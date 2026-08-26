@@ -168,6 +168,10 @@ constraints, gotchas, verified facts), and updates at most
 side by side under `> ⚠ conflict:` markers, new pages cross-linked so
 nothing is orphaned.
 
+Project files and directories are contained to the repository; a directory is one source identity and generated, binary, ignored, or inaccessible entries are skipped. URL access occurs only for a URL explicitly supplied to the command. All source content is treated as untrusted evidence: embedded instructions cannot change the workflow, invoke tools, or authorize reading another path or URL.
+
+Ingestion validates and prepares the full bounded change before synchronizing pages, `sources.md`, and `INDEX.md`. Read, fetch, containment, or validation failure leaves those artifacts unchanged. Re-ingestion preserves the stable source ID and first-ingested date while refreshing supported claims and keeping disagreements visible.
+
 ### 3. `/speckit.wiki.query` — the payoff
 
 ```text
