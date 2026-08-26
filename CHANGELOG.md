@@ -4,6 +4,17 @@ All notable changes to the LLM Wiki extension are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-08-26
+
+### Changed
+
+- Completed a retrospective Spec Kit Time Machine pass across wiki initialization, ingestion, query, lint, and status, with feature specifications, implementation plans, contracts, validation checklists, and execution tasks retained under `specs/`.
+- Hardened `/speckit.wiki.init` configuration handling and repository-boundary validation while preserving non-destructive initialization.
+- Made `/speckit.wiki.ingest` an all-or-nothing update: it now prepares and validates pages, source-registry state, and index changes before committing them together.
+- Tightened `/speckit.wiki.query` to produce bounded, cited answers with explicit coverage gaps instead of unsupported conclusions.
+- Refined `/speckit.wiki.lint` into deterministic evidence-based health checks with a narrow mechanical repair boundary and accurate derived reports.
+- Refined `/speckit.wiki.status` into a strictly read-only structural snapshot with explicit unknown values, bounded filters, and one deterministic evidence-backed next action.
+
 ## [1.0.0] - 2026-07-03
 
 ### Added
