@@ -34,6 +34,20 @@
       },
       "registered_skills": [],
       "installed_at": "2026-08-26T16:57:58.819225+00:00"
+    },
+    "spec-kit-diagram": {
+      "version": "0.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:f45c873e5153a7c32170f565b74863825854cfa1e35613904d6f56e4a10117f9",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "codex": [
+          "speckit.spec-kit-diagram.spec-identity"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-08-26T19:58:58.210569+00:00"
     }
   }
 }

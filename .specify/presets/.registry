@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "presets": {
+    "spec-kit-diagram": {
+      "version": "0.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:257749cda99174f77fe1abdd3009b28d1a97208ff0bc40f9f3971a6e343f13aa",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "codex": [
+          "speckit.specify"
+        ]
+      },
+      "registered_skills": {
+        "codex": [
+          "speckit-specify"
+        ]
+      },
+      "installed_at": "2026-08-26T19:59:33.493955+00:00"
+    }
+  }
+}
