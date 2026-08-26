@@ -311,3 +311,27 @@ Credits: the LLM Wiki pattern by Andrej Karpathy
 [Spec Kit](https://github.com/github/spec-kit) by GitHub;
 [OpenWiki](https://github.com/langchain-ai/openwiki) by LangChain (the
 complementary code-documentation side of the same idea).
+
+## Evolving Specifications
+
+This project uses the **Merge-Bounded Flow-Back Spec Persistence Model**. A feature's `spec.md`, `plan.md`, `tasks.md`, and implementation form one reviewable unit while that feature is in progress. Discoveries made during clarification, planning, task breakdown, or implementation may require changes to any of those artifacts. Those changes must flow back through the artifact set until it consistently describes the behavior and approach the project intends to merge.
+
+The model has two phases:
+
+1. **Before merge, use flow-back.** Feature artifacts are mutable working documents. Begin an edit where the new information is discovered, decide whether it affects intended behavior, technical approach, task breakdown, or implementation, and update every affected artifact. A change in code or `tasks.md` must not remain in conflict with `plan.md` or `spec.md`.
+2. **After merge, use flow-forward.** The merged feature directory is a historical record and must not be substantively rewritten. A later change to intended behavior starts a new feature directory and references the earlier feature when the relationship matters. Git history records edits, but it is not a substitute for preserving the meaning of the artifacts that were reviewed and merged together.
+
+The merge boundary acts as the feature's commit point. In this policy, merge means acceptance into the project's designated integration branch, such as `master` or `develop`, rather than an intermediate commit or branch synchronization. Before that point, incorporating accepted discoveries keeps the specification honest and avoids preserving mistakes merely because they appeared in an earlier workflow stage. After that point, freezing the artifacts prevents later work from rewriting the requirements, rationale, and implementation context under which the feature was accepted.
+
+Contributors must follow these rules:
+
+- Treat `spec.md`, `plan.md`, `tasks.md`, and the implementation as one coherent change set until merge.
+- Capture a discovery first in the artifact closest to the work, then determine and apply its consequences throughout the artifact set.
+- Update `spec.md` when intended behavior or requirements change, `plan.md` when the chosen technical approach changes, and `tasks.md` when the work needed to deliver the accepted behavior changes.
+- Preserve meaningful rationale in the appropriate artifact or architecture decision record before replacing obsolete plan or task content.
+- Do not let flow-back silently enlarge the feature. Split out a new feature when a discovery introduces independently valuable behavior, materially expands scope, or requires separate review and acceptance.
+- Reconcile contradictions before continuing work that depends on the disputed direction. After tasking or consequential artifact reconciliation, run `/speckit.analyze` before starting or resuming implementation. After implementation, use `/speckit.converge` until no gaps remain. Before merge, execute the project's applicable validation and review the artifact and implementation diffs together.
+- Treat a merged feature directory as semantically immutable. Editorial corrections may fix presentation without changing meaning; any later requirement or behavioral change requires a new feature.
+- Make a later feature identify the earlier feature it amends, replaces, or depends on when that relationship is necessary to understand the change history. Do not edit the earlier feature to make it appear as though it always described the later behavior.
+
+This model accepts that implementation produces useful knowledge while preserving a trustworthy history of accepted changes. It avoids the cascading historical rewrites of a living specification and the premature immutability of strict flow-forward development. Its principal risk is silent divergence during active work, so reconciliation and pre-merge review are required parts of the model rather than optional cleanup.
