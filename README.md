@@ -113,7 +113,7 @@ files; no external tools, MCP servers, or network access required.
 | `/speckit.wiki.ingest [source]` | Register a source, fold its knowledge into ≤N pages with citations | pages, `INDEX.md`, `sources.md` |
 | `/speckit.wiki.query [question]` | Answer from pages with citations; report coverage honestly | **read-only** |
 | `/speckit.wiki.lint [scope]` | Contradictions, orphans, stale claims, broken links, index drift | `lint-report.md` (+ mechanical index/link fixes) |
-| `/speckit.wiki.status` | One-screen snapshot + one recommended next action | **read-only** |
+| `/speckit.wiki.status [page-type \| full]` | Structural-only snapshot + one evidence-backed next action | **read-only** |
 
 ## Where it fits in the Spec Kit workflow
 
@@ -207,11 +207,12 @@ Findings carry exact evidence and stable ordering. Lint prepares and validates t
 /speckit.wiki.status
 → 14 pages (5 decision · 4 concept · 3 component · 2 reference) · 9 sources
 → 1 unresolved conflict: payments-retries.md (S002 vs S007)
-→ Recommendation: resolve the conflict — re-ingest S002, then /speckit.wiki.lint
+→ Recommendation: resolve the conflict in payments-retries.md between S002 and S007
 ```
 
-Read-only, one screen, exactly one recommended next action. Open a fresh
-session, run `status`, continue — the files are the memory.
+Status is strictly read-only and reconstructs a one-screen default snapshot from the schema scope, index, source registry, optional lint report, and bounded active-feature path metadata. It never opens wiki page bodies, feature-artifact bodies, or original sources to fill gaps; missing dates and malformed metadata remain visibly `unknown` or `invalid`.
+
+Pass one configured page type to filter the page slice, or `full` to expand every default slice by at most three times without expanding read authority. Every run selects exactly one next action from current evidence using stable priority and tie-breaking. Open a fresh session, run `status`, continue — the files are the memory.
 
 ## State files
 
