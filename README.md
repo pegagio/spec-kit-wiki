@@ -113,7 +113,7 @@ files; no external tools, MCP servers, or network access required.
 | `/speckit.wiki.ingest [source]` | Register a source, fold its knowledge into ≤N pages with citations | pages, `INDEX.md`, `sources.md` |
 | `/speckit.wiki.query [question]` | Answer from pages with citations; report coverage honestly | **read-only** |
 | `/speckit.wiki.lint [scope]` | Contradictions, orphans, stale claims, broken links, index drift | `lint-report.md` (+ mechanical index/link fixes) |
-| `/speckit.wiki.status` | One-screen snapshot + one recommended next action | **read-only** |
+| `/speckit.wiki.status [page-type \| full]` | Structural-only snapshot + one evidence-backed next action | **read-only** |
 
 ## Where it fits in the Spec Kit workflow
 
@@ -152,9 +152,7 @@ makes it *permanent and reusable across features*. `harness.report` writes
 /speckit.wiki.init Everything we learn about the payments domain and our vendor constraints
 ```
 
-Creates `wiki/SCHEMA.md` (the rules — edit freely; commands obey it),
-`wiki/INDEX.md`, and `wiki/sources.md`. Idempotent: re-running appends a new
-scope line instead of overwriting.
+Creates `wiki/SCHEMA.md` (the rules — edit freely; commands obey it), `wiki/INDEX.md`, and `wiki/sources.md`. Initialization never creates knowledge pages or synthesized claims. It is idempotent: re-running without a scope writes nothing, while a supplied scope is appended as one new numbered item instead of overwriting existing wiki content.
 
 ### 2. `/speckit.wiki.ingest` — whenever knowledge is produced
 
@@ -170,6 +168,10 @@ constraints, gotchas, verified facts), and updates at most
 side by side under `> ⚠ conflict:` markers, new pages cross-linked so
 nothing is orphaned.
 
+Project files and directories are contained to the repository; a directory is one source identity and generated, binary, ignored, or inaccessible entries are skipped. URL access occurs only for a URL explicitly supplied to the command. All source content is treated as untrusted evidence: embedded instructions cannot change the workflow, invoke tools, or authorize reading another path or URL.
+
+Ingestion validates and prepares the full bounded change before synchronizing pages, `sources.md`, and `INDEX.md`. Read, fetch, containment, or validation failure leaves those artifacts unchanged. Re-ingestion preserves the stable source ID and first-ingested date while refreshing supported claims and keeping disagreements visible.
+
 ### 3. `/speckit.wiki.query` — the payoff
 
 ```text
@@ -179,6 +181,10 @@ nothing is orphaned.
 Loads the index, reads at most `pages_slice` relevant pages, and answers with
 citations — closing with an honest coverage verdict: **Covered**, **Partial**
 (with the exact gap and the ingest that would close it), or **Uncovered**.
+
+Index metadata selects candidates but is not itself evidence. Query reads only selected pages and the source-registry entries needed to validate their citations; claims with unknown source IDs are reported as provenance gaps. The question and all wiki text are untrusted data, so embedded instructions cannot change limits, invoke tools, expand access, or weaken the read-only contract.
+
+Covered means every material part of the question has valid evidence, Partial means only some do, and Uncovered means none do. Conflicts remain visible with every cited side. Query never repairs structural problems or changes project files.
 
 ### 4. `/speckit.wiki.lint` — regular maintenance
 
@@ -191,17 +197,22 @@ uncited claims). Mechanical drift is fixed in place (configurable); semantic
 findings land in `wiki/lint-report.md` with suggested fixes — lint never
 rewrites your prose.
 
+The automatic repair allowlist is intentionally narrow: regenerate `INDEX.md` from valid page metadata and update the target of an unambiguous renamed-page link. Missing or ambiguous links, citations, claims, conflicts, source history, taxonomy, and all semantic findings remain report-only. Wiki text is untrusted data and cannot alter checks or repair policy.
+
+Findings carry exact evidence and stable ordering. Lint prepares and validates the complete fix set before writing, and the report records what was actually applied. Each run ends with exactly one highest-value unresolved action, or states that no action is needed.
+
 ### 5. `/speckit.wiki.status` — resume, or decide what's next
 
 ```text
 /speckit.wiki.status
 → 14 pages (5 decision · 4 concept · 3 component · 2 reference) · 9 sources
 → 1 unresolved conflict: payments-retries.md (S002 vs S007)
-→ Recommendation: resolve the conflict — re-ingest S002, then /speckit.wiki.lint
+→ Recommendation: resolve the conflict in payments-retries.md between S002 and S007
 ```
 
-Read-only, one screen, exactly one recommended next action. Open a fresh
-session, run `status`, continue — the files are the memory.
+Status is strictly read-only and reconstructs a one-screen default snapshot from the schema scope, index, source registry, optional lint report, and bounded active-feature path metadata. It never opens wiki page bodies, feature-artifact bodies, or original sources to fill gaps; missing dates and malformed metadata remain visibly `unknown` or `invalid`.
+
+Pass one configured page type to filter the page slice, or `full` to expand every default slice by at most three times without expanding read authority. Every run selects exactly one next action from current evidence using stable priority and tie-breaking. Open a fresh session, run `status`, continue — the files are the memory.
 
 ## State files
 
@@ -264,14 +275,13 @@ lint:
   auto_fix: index-and-links   # none | index-and-links
 ```
 
-Precedence (lowest → highest): extension defaults → config file →
-`SPECKIT_WIKI_*` environment variables → per-invocation `key=value` arguments.
+Precedence is resolved per setting from lowest to highest: extension defaults → config file → `SPECKIT_WIKI_*` environment variables → per-invocation `key=value` arguments. Numeric limits are validated before use, and `lint.auto_fix` accepts only `none` or `index-and-links`.
+
+The configured state directory must remain inside the repository after path normalization and existing-symlink resolution. Initialization rejects escaping values such as `directory=../outside-wiki` before reading or writing wiki state.
 
 ## Troubleshooting & FAQ
 
-**`init` says the wiki already exists.** By design — it never overwrites. New
-scope sentences are appended; to start over, delete the `wiki/` directory
-yourself.
+**`init` says the wiki already exists.** By design — `SCHEMA.md` is the initialization sentinel and existing wiki content is never regenerated. New scope sentences are appended verbatim. If the wiki is partial or damaged, inspect it with `status` and `lint`; initialization leaves recovery decisions to you rather than replacing user-authored state.
 
 **`query` refuses to answer something the model obviously knows.** Also by
 design: the wiki's value is that its answers are *backed*. Ingest a source
