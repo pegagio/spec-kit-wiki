@@ -8,3 +8,7 @@ Thumbs.db
 # Python helper caches
 __pycache__/
 *.pyc
+
+# Diagram identity recovery state (private machine-local evidence)
+.specify/state/spec-kit-diagram/
+specs/*/.spec-kit-diagram-claim.json

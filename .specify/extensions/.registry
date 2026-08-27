@@ -16,6 +16,38 @@
       },
       "registered_skills": [],
       "installed_at": "2026-08-26T14:55:33.605334+00:00"
+    },
+    "wiki": {
+      "version": "1.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:73a980cd1b0096e8b98e8f86aedafe2f8a5b456d792dbce47a387a4f6b6e72a2",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "codex": [
+          "speckit.wiki.init",
+          "speckit.wiki.ingest",
+          "speckit.wiki.query",
+          "speckit.wiki.lint",
+          "speckit.wiki.status"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-08-26T16:57:58.819225+00:00"
+    },
+    "spec-kit-diagram": {
+      "version": "0.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:f45c873e5153a7c32170f565b74863825854cfa1e35613904d6f56e4a10117f9",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "codex": [
+          "speckit.spec-kit-diagram.spec-identity"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-08-26T19:58:58.210569+00:00"
     }
   }
 }

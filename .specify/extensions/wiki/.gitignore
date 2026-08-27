@@ -1,0 +1,10 @@
+# Local config overrides (never commit credentials or machine-local settings)
+*.local.yml
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Python helper caches
+__pycache__/
+*.pyc

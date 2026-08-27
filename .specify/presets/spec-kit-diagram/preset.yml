@@ -1,0 +1,32 @@
+schema_version: "1.0"
+
+preset:
+  id: "spec-kit-diagram"
+  name: "The Diagram Integration"
+  version: "0.1.0"
+  description: "Compose Spec Kit creation commands with local Diagram capabilities"
+  author: "pegagio"
+  repository: "https://github.com/pegagio/diagram"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=1.0.1,<1.1.0"
+
+provides:
+  templates:
+    - type: "command"
+      name: "speckit.specify"
+      file: "commands/speckit.specify.md"
+      description: "Wrap Specify with a Diagram-authoritative Feature identity handoff"
+      strategy: "wrap"
+    - type: "command"
+      name: "speckit.git.feature"
+      file: "commands/speckit.git.feature.md"
+      description: "When Git is installed, wrap branch creation with the shared Diagram handoff"
+      strategy: "wrap"
+
+tags:
+  - diagram
+  - identity
+  - workflow
+

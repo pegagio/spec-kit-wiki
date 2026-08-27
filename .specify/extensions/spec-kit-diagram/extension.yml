@@ -1,0 +1,32 @@
+schema_version: "1.0"
+
+extension:
+  id: spec-kit-diagram
+  name: "The Diagram Integration"
+  version: "0.1.0"
+  description: "Local Diagram capabilities for Spec Kit, beginning with authoritative Feature identity"
+  author: pegagio
+  repository: https://github.com/pegagio/diagram
+  license: MIT
+
+requires:
+  speckit_version: ">=1.0.1,<1.1.0"
+  tools:
+    - name: python3
+      required: true
+
+provides:
+  commands:
+    - name: speckit.spec-kit-diagram.spec-identity
+      file: commands/speckit.spec-kit-diagram.spec-identity.md
+      description: "Reserve or recover the Diagram identity handoff for a Feature spec"
+  config:
+    - name: "local-config.yml"
+      template: "config-template.yml"
+      description: "Machine-local Diagram integration configuration"
+      required: false
+
+tags:
+  - diagram
+  - identity
+  - local
